@@ -6,6 +6,10 @@ execute:
   echo: false
 ---
 
+Summary Paragraph:
+Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year?
+
+
 ```{r}
 #| label: setup
 #| message: false
