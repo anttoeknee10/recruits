@@ -92,6 +92,28 @@ ul.task-list li input[type="checkbox"] {
 2 Male      40</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>parsnip model object
+
+
+Call:
+stats::lm(formula = height ~ age, data = data)
+
+Coefficients:
+(Intercept)          age  
+   173.4606      -0.0213  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   166.        2.02     81.9  3.07e-53   162.       170. 
+2 sexMale         8.89      2.26      3.93 2.75e- 4     4.34      13.4</code></pre>
+</div>
+</div>
 
 </main>
 <!-- /main column -->

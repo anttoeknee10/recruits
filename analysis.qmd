@@ -7,7 +7,7 @@ execute:
 ---
 
 Summary Paragraph:
-Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits.
+Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits. We model height, measured in centimeters, as a normally distributed linear function of sex.
 
 
 ```{r}
@@ -42,5 +42,30 @@ ggplot(recruits, aes(x = height, fill = sex)) +
 
 recruits |> count(sex)
 ```
+
+```{r}
+#| label: model-building
+
+linear_reg(engine = "lm") |>
+  fit(height ~ age, data = recruits)
+```
+
+```{r}
+#| cache: true
+#| label: fit-recruits
+
+fit_recruits <- linear_reg() |>
+  set_engine("lm") |>
+  fit(height ~ sex, data = recruits)
+```
+
+```{r}
+#| label: tidy-fit-recruits
+
+tidy(fit_recruits, conf.int = TRUE)
+```
+
+
+
 
 
