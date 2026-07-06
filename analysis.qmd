@@ -6,10 +6,6 @@ execute:
   echo: false
 ---
 
-Summary Paragraph:
-Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits. We model height, measured in centimeters, as a normally distributed linear function of sex.
-
-
 ```{r}
 #| label: setup
 #| message: false
@@ -18,36 +14,7 @@ library(tidyverse)
 library(primer.tutorials)
 library(tidymodels)
 library(broom)
-```
-
-```{r}
-#| label: height-by-sex-plot
-#| warning: false
-
-ggplot(recruits, aes(x = height, fill = sex)) +
-  geom_density(alpha = 0.5) +
-  labs(
-    title = "Distribution of Recruit Heights by Sex",
-    subtitle = "Male recruits tend to be taller on average than female recruits",
-    x = "Height (cm)",
-    y = "Density",
-    fill = "Sex",
-    caption = "Source: recruits dataset from primer.tutorials"
-  ) +
-  theme_minimal()
-```
-
-```{r}
-#| label: sex-count
-
-recruits |> count(sex)
-```
-
-```{r}
-#| label: model-building
-
-linear_reg(engine = "lm") |>
-  fit(height ~ age, data = recruits)
+library(marginaleffects)
 ```
 
 ```{r}
@@ -60,12 +27,28 @@ fit_recruits <- linear_reg() |>
 ```
 
 ```{r}
-#| label: tidy-fit-recruits
+#| label: plot-predictions-fit-recruits
 
-tidy(fit_recruits, conf.int = TRUE)
+plot_predictions(fit_recruits, condition = "sex", draw = FALSE) |>
+  ggplot(aes(x = sex, y = estimate, color = sex)) +
+  geom_point(size = 4) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.15, linewidth = 1) +
+  labs(
+    title = "Predicted Heights of USMC Recruits by Sex",
+    subtitle = "On average, male recruits are predicted to be about 9 cm taller than female recruits",
+    x = "Sex",
+    y = "Predicted Height (cm)",
+    caption = "Source: recruits dataset from NHANES via primer.tutorials. Error bars show 95% confidence intervals."
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
+Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits. We model height, measured in centimeters, as a normally distributed linear function of sex. We estimate that male recruits have an average height of 174.8 centimeters and female recruits 165.9 centimeters, though the 95% confidence intervals of [170.2, 179.4] and [161.8, 170.0] respectively remind us that these are estimates with meaningful uncertainty, and the true average heights could plausibly fall anywhere within those ranges.
 
+## Mathematical Formula
 
+$$\text{height} = 165.9 + 8.9 \cdot \text{sexMale} + \epsilon$$
 
+with $\epsilon \sim N(0, 41.0)$.
 

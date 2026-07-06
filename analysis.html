@@ -39,6 +39,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="analysis_files/libs/bootstrap/bootstrap-2d443bbef96d76ac161aa0f43d055002.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -73,47 +102,21 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Summary Paragraph: Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="analysis_files/figure-html/height-by-sex-plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="analysis_files/figure-html/plot-predictions-fit-recruits-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  sex        n
-  &lt;chr&gt;  &lt;int&gt;
-1 Female    10
-2 Male      40</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>parsnip model object
-
-
-Call:
-stats::lm(formula = height ~ age, data = data)
-
-Coefficients:
-(Intercept)          age  
-   173.4606      -0.0213  </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 7
-  term        estimate std.error statistic  p.value conf.low conf.high
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)   166.        2.02     81.9  3.07e-53   162.       170. 
-2 sexMale         8.89      2.26      3.93 2.75e- 4     4.34      13.4</code></pre>
-</div>
-</div>
+<p>Height among young adults varies meaningfully by sex, making sex a useful covariate for predicting how tall someone is likely to be. The data comes from the recruits dataset, which was collected by the National Health and Nutrition Examination Survey (NHANES) and contains measurements about 50 USMC recruits, and will be used to answer the question: what will the average height be of male and female USMC recruits next year? Our largest concern is that because the data set draws from USMC recruits, the sample is likely skewed toward healthier, taller, and more physically fit individuals which may lead our model to systematically overestimate the heights of the upcoming recruits. We model height, measured in centimeters, as a normally distributed linear function of sex. We estimate that male recruits have an average height of 174.8 centimeters and female recruits 165.9 centimeters, though the 95% confidence intervals of [170.2, 179.4] and [161.8, 170.0] respectively remind us that these are estimates with meaningful uncertainty, and the true average heights could plausibly fall anywhere within those ranges.</p>
+<section id="mathematical-formula" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-formula">Mathematical Formula</h2>
+<p><span class="math display">\[\text{height} = 165.9 + 8.9 \cdot \text{sexMale} + \epsilon\]</span></p>
+<p>with <span class="math inline">\(\epsilon \sim N(0, 41.0)\)</span>.</p>
+</section>
 
 </main>
 <!-- /main column -->
