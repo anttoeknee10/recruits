@@ -1,0 +1,40 @@
+---
+title: "Recruits"
+format: html
+author: Anthony Gao
+execute:
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(primer.tutorials)
+```
+
+```{r}
+#| label: height-by-sex-plot
+#| warning: false
+
+ggplot(recruits, aes(x = height, fill = sex)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "Distribution of Recruit Heights by Sex",
+    subtitle = "Male recruits tend to be taller on average than female recruits",
+    x = "Height (cm)",
+    y = "Density",
+    fill = "Sex",
+    caption = "Source: recruits dataset from primer.tutorials"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+#| label: sex-count
+
+recruits |> count(sex)
+```
+
+
